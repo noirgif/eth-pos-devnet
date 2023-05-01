@@ -91,9 +91,18 @@ services:
       - ./consensus:/consensus
       - ./jwtsecret:/execution/jwtsecret
 
+  curl_service:
+    image: curlimages/curl:latest
+    depends_on:
+      beacon-chain:
+        condition: service_started
+    command: sh -c "curl beacon-chain:8080/p2p | grep -o '/ip4/[^ ]*' | sed 's/,/ /g' > /consensus/peer.txt"
+    volumes:
+      - ./consensus:/consensus
+
 
   beacon-chain-2:
-    image: "gcr.io/prysmaticlabs/prysm/beacon-chain:latest"
+    image: "gcr.io/prysmaticlabs/prysm/beacon-chain:latest-alpine"
     command:
       - --datadir=/consensus/beacon-2-data
       # No peers to sync with in this testnet, so setting to 0
