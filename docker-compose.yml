@@ -102,7 +102,7 @@ services:
 
 
   beacon-chain-2:
-    image: "gcr.io/prysmaticlabs/prysm/beacon-chain:latest-alpine"
+    build: .
     command:
       - --datadir=/consensus/beacon-2-data
       # No peers to sync with in this testnet, so setting to 0
