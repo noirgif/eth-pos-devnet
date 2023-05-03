@@ -76,6 +76,7 @@ services:
       - --grpc-gateway-host=0.0.0.0
       - --p2p-allowlist=0.0.0.0/32
       - --monitoring-host=0.0.0.0
+      - --verbosity=trace
       - --execution-endpoint=http://geth:8551
       - --accept-terms-of-use
       - --jwt-secret=/execution/jwtsecret
@@ -87,6 +88,7 @@ services:
       - 4000:4000
       - 3500:3500
       - 8080:8080
+      - 13000:13000
     volumes:
       - ./consensus:/consensus
       - ./jwtsecret:/execution/jwtsecret
@@ -120,6 +122,7 @@ services:
       - --accept-terms-of-use
       - --jwt-secret=/execution/jwtsecret
       - --force-clear-db
+      - --verbosity=trace
       - --suggested-fee-recipient=0x123463a4b065722e99115d6c222f267d9cabb524
     depends_on:
       curl_service:
@@ -128,6 +131,7 @@ services:
       - 4001:4000
       - 3501:3500
       - 8081:8080
+      - 13001:13000
     volumes:
       - ./consensus:/consensus
       - ./jwtsecret:/execution/jwtsecret
