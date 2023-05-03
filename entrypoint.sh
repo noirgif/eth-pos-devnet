@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/busybox/sh
 
 PEER_FILE="/consensus/peer.txt"
 PEER_ARG="--peer=$(cat "$PEER_FILE")"

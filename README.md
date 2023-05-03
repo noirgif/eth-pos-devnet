@@ -17,7 +17,13 @@ First, install Docker. Then, run:
 
 ```
 git clone https://github.com/rauljordan/eth-pos-devnet && cd eth-pos-devnet
-docker compose up -d
+source .aliases
+# Manually build the docker image
+# Feel free to modify the code to build it every time
+b
+# It also includes cleaning up code
+# Otherwise geth will complain about a different genesis when restarting
+up 
 ```
 
 You will see the following:

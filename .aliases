@@ -1,0 +1,3 @@
+alias down='docker-compose down'
+alias up='sudo rm -rf execution/geth ; sudo rm -rf consensus/*data ; sudo rm -rf consensus/peer.txt ; sudo rm -rf consensus/genesis.ssz ; git checkout execution/genesis.json ; docker-compose up -d'
+alias b='docker build -t my-beacon-chain .'

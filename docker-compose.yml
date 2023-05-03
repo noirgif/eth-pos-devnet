@@ -74,6 +74,8 @@ services:
       - --chain-id=${CHAIN_ID:-32382}
       - --rpc-host=0.0.0.0
       - --grpc-gateway-host=0.0.0.0
+      - --p2p-allowlist=0.0.0.0/32
+      - --monitoring-host=0.0.0.0
       - --execution-endpoint=http://geth:8551
       - --accept-terms-of-use
       - --jwt-secret=/execution/jwtsecret
@@ -81,8 +83,6 @@ services:
     depends_on:
       geth:
         condition: service_started
-      create-beacon-chain-genesis:
-        condition: service_completed_successfully
     ports:
       - 4000:4000
       - 3500:3500
@@ -96,13 +96,13 @@ services:
     depends_on:
       beacon-chain:
         condition: service_started
-    command: sh -c "curl beacon-chain:8080/p2p | grep -o '/ip4/[^ ]*' | sed 's/,/ /g' > /consensus/peer.txt"
+    command: sh -c "sleep 5; curl beacon-chain:8080/p2p | tee >(grep -o '/ip4/[^ ]*' | sed 's/,/ /g' > /home/curl_user/peer.txt")
     volumes:
-      - ./consensus:/consensus
+      - ./consensus:/home/curl_user
 
 
   beacon-chain-2:
-    build: .
+    image: my-beacon-chain
     command:
       - --datadir=/consensus/beacon-2-data
       # No peers to sync with in this testnet, so setting to 0
@@ -122,8 +122,8 @@ services:
       - --force-clear-db
       - --suggested-fee-recipient=0x123463a4b065722e99115d6c222f267d9cabb524
     depends_on:
-      beacon-chain:
-        condition: service_started
+      curl_service:
+        condition: service_completed_successfully
     ports:
       - 4001:4000
       - 3501:3500
